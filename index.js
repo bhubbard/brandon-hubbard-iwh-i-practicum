@@ -1,6 +1,4 @@
 require('dotenv').config();
-// console.log(process.env);
-
 
 const express = require('express');
 const axios = require('axios');
@@ -11,17 +9,24 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-// Get Token from config file.
+// Get Token from config file.d
 const HUBSPOT_ACCESS_KEY = process.env.HUBSPOT_ACCESS_KEY;
 
-console.log(HUBSPOT_ACCESS_KEY);
-
-// TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
-
-// Print Hello World
-app.get('/', (req, res) => {
-    res.send('Hello World');
+// HOMEPAGE - List Cars.
+app.get('/', async (req, res) => {
+    const contacts = 'https://api.hubapi.com/crm/v3/objects/cars?properties=car_name,car_year,car_type';
+    const headers = {
+        Authorization: `Bearer ${HUBSPOT_ACCESS_KEY}`,
+        'Content-Type': 'application/json'
+    }
+    try {
+        const resp = await axios.get(contacts, { headers });
+        const data = resp.data.results;
+        console.log(data);
+        res.render('cars', { title: 'Cars | HubSpot APIs', data });
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
@@ -34,23 +39,6 @@ app.get('/', (req, res) => {
 
 /** 
 * * This is sample code to give you a reference for how you should structure your calls. 
-
-* * App.get sample
-app.get('/contacts', async (req, res) => {
-    const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts';
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    }
-    try {
-        const resp = await axios.get(contacts, { headers });
-        const data = resp.data.results;
-        res.render('contacts', { title: 'Contacts | HubSpot APIs', data });      
-    } catch (error) {
-        console.error(error);
-    }
-});
-
 * * App.post sample
 app.post('/update', async (req, res) => {
     const update = {

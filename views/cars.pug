@@ -1,0 +1,14 @@
+doctype html
+html 
+    head 
+        title= `${title}`
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/style.css")
+    body    
+        h1 Cars
+        .cards 
+            each car in data
+                .card 
+                    h2.card__name #{car.properties.car_name}
+                    p.card__year #{car.properties.car_year}
+                    p.card__type #{car.properties.car_type}
