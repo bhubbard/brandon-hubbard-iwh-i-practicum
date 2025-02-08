@@ -11,14 +11,16 @@ html
         script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js")
     body
         div.container
-            h1.ml-0.pl-0 Add New Car
-            p
-                a(href="/") Return to the homepage
-            form(method="POST")
-                label(for="car_name") Car Name
-                input#name(type="text" name="car_name" required)
-                label(for="car_year") Car Year
-                input#artist(type="year" name="car_year" required)
-                label(for="car_type") Car Type
-                input#label(type="text" name="car_type" required)
-                input(type="submit" value="Submit")
+            div.row
+                div.col
+                    h1.ml-0.pl-0 Add New Car
+                    p
+                        a(href="/") Return to the homepage
+                    form(method="POST")
+                        label(for="car_name") Car Name
+                        input#name(type="text" name="car_name" required)
+                        label(for="car_year") Car Year
+                        input#artist(type="year" name="car_year" required)
+                        label(for="car_type") Car Type
+                        input#label(type="text" name="car_type" required)
+                        input(type="submit" value="Submit")
