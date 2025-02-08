@@ -28,10 +28,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-//  Create a new app.get route for the form to create or update cars custom object data. Send this data along in the next route.
-app.get('/update-cobj', (req, res) => {
-    res.render('create', { title: 'Create Car' });
-});
+
 
 app.get('/update-cobj', async (req, res) => {
     try {
