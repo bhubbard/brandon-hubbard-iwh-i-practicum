@@ -14,19 +14,57 @@ const HUBSPOT_ACCESS_KEY = process.env.HUBSPOT_ACCESS_KEY;
 
 // HOMEPAGE - List Cars.
 app.get('/', async (req, res) => {
-    const contacts = 'https://api.hubapi.com/crm/v3/objects/cars?properties=car_name,car_year,car_type';
+    const cars = 'https://api.hubapi.com/crm/v3/objects/cars?properties=car_name,car_year,car_type';
     const headers = {
         Authorization: `Bearer ${HUBSPOT_ACCESS_KEY}`,
         'Content-Type': 'application/json'
     }
     try {
-        const resp = await axios.get(contacts, { headers });
+        const resp = await axios.get(cars, { headers });
         const data = resp.data.results;
-        console.log(data);
-        res.render('cars', { title: 'Cars | HubSpot APIs', data });
+
+        res.render('cars', { title: 'Cars | Brandon Hubbard | Integrating With HubSpot I Practicum', data });
     } catch (error) {
         console.error(error);
     }
+});
+
+//  Create a new app.get route for the form to create or update cars custom object data. Send this data along in the next route.
+app.get('/create', (req, res) => {
+    res.render('create', { title: 'Create Car' });
+});
+
+app.get('/create', async (req, res) => {
+    try {
+        res.render('create', { title: 'Create Car | Brandon Hubbard | Integrating With HubSpot I Practicum' });
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+app.post('/create', async (req, res) => {
+    const data = {
+        properties: {
+            "car_name": req.body.car_name,
+            "car_year": req.body.car_year,
+            "car_type": req.body.car_type,
+            "description": req.body.description
+        }
+    }
+    const createCar = `https://api.hubapi.com/crm/v3/objects/cars`;
+    const headers = {
+        Authorization: `Bearer ${HUBSPOT_ACCESS_KEY}`,
+        'Content-Type': 'application/json'
+    };
+
+    try { 
+        await axios.post(createCar, data, { headers } );
+        console.log("New car created successfully");
+        res.redirect('/');
+    } catch(err) {
+        console.error(err);
+    }
+
 });
 
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
